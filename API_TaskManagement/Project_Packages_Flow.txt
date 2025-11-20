@@ -1,0 +1,51 @@
+﻿// Complete .NET Core 8 Project: TaskRoutine.Api
+// This is a simple Task and Routine Management System using Dapper, Stored Procedures, CQRS with MediatR.
+// No Authorization.
+// Structure: Clean Architecture.
+// Database: SQL Server (assume localdb).
+// Stored Procedures for all DB operations.
+// Inheritance Example: BaseRepository(ConnectionOptions options) inherited by TaskRepository and RoutineRepository.
+// Run: Create DB, run Stored Procs script, then dotnet run.
+
+// Step 1: Create Solution & Projects (Run in terminal)
+mkdir TaskRoutine
+cd TaskRoutine
+dotnet new sln -n TaskRoutine
+mkdir src
+cd src
+dotnet new webapi -n TaskRoutine.Api
+dotnet new classlib -n TaskRoutine.Application
+dotnet new classlib -n TaskRoutine.Domain
+dotnet new classlib -n TaskRoutine.Infrastructure
+cd ..
+dotnet sln add src/TaskRoutine.Api/TaskRoutine.Api.csproj
+dotnet sln add src/TaskRoutine.Application/TaskRoutine.Application.csproj
+dotnet sln add src/TaskRoutine.Domain/TaskRoutine.Domain.csproj
+dotnet sln add src/TaskRoutine.Infrastructure/TaskRoutine.Infrastructure.csproj
+
+// Step 2: Add NuGet Packages
+cd src/TaskRoutine.Api
+dotnet add package MediatR --version 12.4.1
+dotnet add package Dapper --version 2.1.35
+dotnet add package Microsoft.Data.SqlClient --version 5.2.2
+dotnet add package Swashbuckle.AspNetCore --version 6.9.0
+
+cd ../TaskRoutine.Application
+dotnet add package MediatR --version 12.4.1
+dotnet add package FluentValidation --version 11.10.0
+
+cd ../TaskRoutine.Infrastructure
+dotnet add package Dapper --version 2.1.35
+dotnet add package Microsoft.Data.SqlClient --version 5.2.2
+
+// Step 3: Add References
+cd ../TaskRoutine.Api
+dotnet add reference ../TaskRoutine.Application/TaskRoutine.Application.csproj
+dotnet add reference ../TaskRoutine.Infrastructure/TaskRoutine.Infrastructure.csproj
+
+cd ../TaskRoutine.Application
+dotnet add reference ../TaskRoutine.Domain/TaskRoutine.Domain.csproj
+
+cd ../TaskRoutine.Infrastructure
+dotnet add reference ../TaskRoutine.Domain/TaskRoutine.Domain.csproj
+dotnet add reference ../TaskRoutine.Application/TaskRoutine.Application.csproj

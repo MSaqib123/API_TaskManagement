@@ -1,0 +1,12 @@
+﻿using Domain.Entities;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Features.Routines.Commands.Queries
+{
+    public record GetDueRoutinesQuery(string CurrentTime) : IRequest<IEnumerable<RoutineItem>>;
+}
